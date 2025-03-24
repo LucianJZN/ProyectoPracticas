@@ -1,0 +1,154 @@
+package com.example.ProyectoPracticas.base.entities;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "users")
+public class User {
+	
+	//Columns
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
+    private Long userId;
+
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "mail", unique = true)
+    private String mail;
+
+    @Lob
+    @Column(name = "image")
+    private byte[] image;
+
+    @Column(name = "pass")
+    private String pass;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "rol", nullable = false)
+    private Role rol;
+
+    @Column(name = "enabled")
+    private Boolean enabled = true;
+
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
+    private List<Invoice> invoices;
+
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
+    private List<Sale> sales;
+
+    public enum Role {
+        USUARIO, ADMINISTRADOR
+    }
+
+    // Getters and Setters
+	public Long  getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long  userId) {
+		this.userId = userId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
+
+	public String getPass() {
+		return pass;
+	}
+
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
+
+	public Role getRol() {
+		return rol;
+	}
+
+	public void setRol(Role rol) {
+		this.rol = rol;
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public List<Invoice> getInvoices() {
+		return invoices;
+	}
+
+	public void setInvoices(List<Invoice> invoices) {
+		this.invoices = invoices;
+	}
+
+	public List<Sale> getSales() {
+		return sales;
+	}
+
+	public void setSales(List<Sale> sales) {
+		this.sales = sales;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		//result = prime * result + Arrays.hashCode(image);
+		result = prime * result + Objects.hash(enabled, invoices, mail, name, pass, rol, sales, userId);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		return Objects.equals(enabled, other.enabled) && Arrays.equals(image, other.image)
+				&& Objects.equals(mail, other.mail)
+				&& Objects.equals(name, other.name) && Objects.equals(pass, other.pass) && rol == other.rol
+				&& Objects.equals(sales, other.sales) && Objects.equals(userId, other.userId);
+	}
+
+	//toString
+	@Override
+	public String toString() {
+		return "User [userId=" + userId + ", name=" + name + ", mail=" + mail + ", image=" + Arrays.toString(image)
+				+ ", pass=" + pass + ", rol=" + rol + ", enabled=" + enabled + "]";
+	}    
+}
+
+
