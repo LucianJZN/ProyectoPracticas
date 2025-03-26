@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -37,9 +39,11 @@ public class User {
     private Boolean enabled = true;
 
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Invoice> invoices;
 
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Sale> sales;
 
     public enum Role {

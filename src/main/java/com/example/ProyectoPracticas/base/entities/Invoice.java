@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,9 +26,6 @@ public class Invoice {
     @Column(name = "invoice_id")
     private Long invoiceId;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User userId;
 
     @Column(name = "CIF", nullable = false, length = 9)
     private String CIF;
@@ -40,10 +39,16 @@ public class Invoice {
     @Column(name = "paid", nullable = false)
     private boolean paid;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
+    private User userId;
+    
     @OneToMany(mappedBy = "invoiceId", cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<ProductInvoice> productInvoices;
 
-	public Long getInvoiceId() {
+    public Long getInvoiceId() {
 		return invoiceId;
 	}
 

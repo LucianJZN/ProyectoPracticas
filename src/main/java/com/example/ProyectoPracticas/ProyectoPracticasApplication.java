@@ -19,6 +19,7 @@ public class ProyectoPracticasApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ProyectoPracticasApplication.class, args);
 		
+		/*
 		// Crear una nueva instancia de Invoice
         User user = new User();
         user.setUserId(1L);
@@ -73,6 +74,7 @@ public class ProyectoPracticasApplication {
             session.close();
             HibernateUtil.close();
         }
+        */
     }
 }
 

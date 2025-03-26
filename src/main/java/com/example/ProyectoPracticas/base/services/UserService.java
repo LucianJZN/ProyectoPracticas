@@ -1,0 +1,41 @@
+package com.example.ProyectoPracticas.base.services;
+
+import com.example.ProyectoPracticas.base.entities.User;
+import com.example.ProyectoPracticas.base.repositories.UserRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class UserService {
+
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    // Obtener todos los usuarios
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    // Obtener un usuario por ID
+    public Optional<User> getUserById(Long id) {
+        //return userRepository.findById(id).orElse(null);
+    	//return Optional.ofNullable(userRepository.findById(id).orElse(null));
+        return userRepository.findById(id);
+
+    }
+
+    // Guardar un nuevo usuario
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+
+    // Eliminar un usuario
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+}

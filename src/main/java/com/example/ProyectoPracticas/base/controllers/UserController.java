@@ -1,72 +1,67 @@
 package com.example.ProyectoPracticas.base.controllers;
 
 import com.example.ProyectoPracticas.base.entities.User;
-import com.example.ProyectoPracticas.base.entities.User.Role;
+import com.example.ProyectoPracticas.base.services.UserService;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
-    private final List<User> userList;
+    private final UserService userService;
 
-    public UserController() {
-        userList = new ArrayList<>();
-        userList.add(getDefaultUser());
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    private User getDefaultUser() {
-        User user = new User();
-        user.setUserId(1L);
-        user.setName("UsuarioPrueba");
-        user.setMail("prueba@email.com");
-        user.setPass("Hola123");
-        user.setRol(Role.ADMINISTRADOR);
-        user.setEnabled(true);
-        return user;
-    }
-
-    //EndPoint de prueba
+    // Endpoint de prueba
     @PostMapping("/pruebaUsuario")
     public void printTestUser() {
-    	System.out.println("El EndPoint responde.");
+        System.out.println("El EndPoint responde.");
     }
-    
-    //Show users
+
+    // Mostrar todos los usuarios
     @GetMapping("/showAllUsers")
-    public String getUsers() {
-        return "Lista de usuarios: " + userList;
+    public List<User> getUsers() {
+        return userService.getAllUsers();
     }
 
-    @GetMapping("/showById{id}")
-    public String getUser(@PathVariable int id) {
-    	//Habrá que ver como devuelvo el error
-        return "Usuario con ID " + id + ": " +
-                (id < userList.size() ? userList.get(id).getName() : "No existe ese usuario");
+    // Buscar usuario por ID
+    @GetMapping("/showById/{id}")
+    public String getUser(@PathVariable Long id) {
+        Optional<User> user = userService.getUserById(id);
+        return user.map(value -> "Usuario con ID " + id + ": " + value.getName())
+                   .orElse("No existe ese usuario");
     }
-
-    //Create user
+/*
+    // Crear usuario 
     @PostMapping("/new")
     public String addUser(@RequestBody User user) {
-        userList.add(user);
+        userService.saveUser(user);
         return "Usuario añadido: " + user.toString();
+    }*/
+    
+    @PostMapping("/new")
+    public ResponseEntity<User> addUser(@RequestBody User user) {
+        User savedUser = userService.saveUser(user);
+        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
-    //Get users
+    // Obtener lista de usuarios (JSON)
     @GetMapping("/getAll")
     public List<User> getAllUsers() {
-        return new ArrayList<>(userList);
+        return userService.getAllUsers();
     }
 
+    // Obtener usuario por ID
     @GetMapping("/getById/{id}")
-    public User getUserById(@PathVariable int id) {
-        return userList.stream()
-                .filter(user -> user.getUserId() == id)
-                .findFirst()
-                .orElse(null);
+    public User getUserById(@PathVariable Long id) {
+        return userService.getUserById(id).orElse(null);
     }
 }
