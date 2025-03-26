@@ -14,6 +14,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "products")
 public class Product {
@@ -49,9 +51,11 @@ public class Product {
     private Double sellPrice;
 
     @OneToMany(mappedBy = "productId", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<ProductInvoice> productInvoices;
 
     @OneToMany(mappedBy = "productId", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<DetailsSale> detailsSales;
 
 	public Long getProductId() {

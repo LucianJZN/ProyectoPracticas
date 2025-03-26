@@ -16,6 +16,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "sales")
 public class Sale {
@@ -40,6 +42,7 @@ public class Sale {
     private BigDecimal total;
     
     @OneToMany(mappedBy = "saleId", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<DetailsSale> detailsSales;
 
 	public Long getSaleId() {
