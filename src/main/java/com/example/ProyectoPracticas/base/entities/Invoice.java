@@ -1,6 +1,7 @@
 package com.example.ProyectoPracticas.base.entities;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,7 +33,7 @@ public class Invoice {
     private String CIF;
 
     @Column(name = "date", nullable = false)
-    private java.util.Date date;
+    private LocalDateTime date;
 
     @Column(name = "total", nullable = false)
     private BigDecimal  total;
@@ -73,11 +74,11 @@ public class Invoice {
 		CIF = cIF;
 	}
 
-	public java.util.Date getDate() {
+	public LocalDateTime getDate() {
 		return date;
 	}
 
-	public void setDate(java.util.Date date) {
+	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
 
