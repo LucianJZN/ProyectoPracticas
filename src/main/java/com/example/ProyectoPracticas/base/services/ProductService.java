@@ -16,22 +16,23 @@ public class ProductService {
 	public ProductService(ProductRepository productRepository) {
 		this.productRepository = productRepository;
 	}
-	// Obtener todos los usuarios
+	
+	// Obtener todos los productos
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
-    // Obtener un usuario por ID
+    // Obtener un producto por ID
     public Product getProductById(Long id) {
         return productRepository.findById(id).orElse(null);
     }
 
-    // Guardar un nuevo usuario
+    // Guardar un nuevo producto
     public Product saveProduct(Product product) {
         return productRepository.save(product);
     }
 
-    // Eliminar un usuario
+    // Eliminar un producto
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
     }
