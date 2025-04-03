@@ -22,11 +22,8 @@ public class UserService {
     }
 
     // Obtener un usuario por ID
-    public Optional<User> getUserById(Long id) {
-        //return userRepository.findById(id).orElse(null);
-    	//return Optional.ofNullable(userRepository.findById(id).orElse(null));
-        return userRepository.findById(id);
-
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElse(null);
     }
 
     // Guardar un nuevo usuario

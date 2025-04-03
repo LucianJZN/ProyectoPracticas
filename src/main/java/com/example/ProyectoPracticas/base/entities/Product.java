@@ -10,53 +10,54 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "products")
 public class Product {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id")
-    private Long productId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "product_id")
+	private Long productId;
 
-    @Lob
-    @Column(name = "image")
-    private byte[] image;
+	@Column(name = "image")
+	private String image;
 
-    @Column(name = "name", nullable = false, unique = true, length = 100)
-    private String name;
+	@Column(name = "name", nullable = false, unique = true, length = 100)
+	private String name;
 
-    @Column(name = "amount", nullable = false)
-    private int amount;
+	@Column(name = "amount", nullable = false)
+	private int amount;
 
-    @Column(name = "minimum_amount", nullable = false)
-    private int minimumAmount;
+	@Column(name = "minimum_amount", nullable = false)
+	private int minimumAmount;
 
-    @Column(name = "season")
-    private Boolean season = true;
+	@Column(name = "season")
+	private Boolean season = true;
 
-    @Column(name = "enabled")
-    private Boolean enabled = true;
+	@Column(name = "enabled")
+	private Boolean enabled = true;
 
-    @Column(name = "price", nullable = false)
-    private double price;
+	@Column(name = "price", nullable = false)
+	private BigDecimal price;
 
-    @Column(name = "sell_price")
-    private Double sellPrice;
+	@Column(name = "sell_price")
+	private BigDecimal sellPrice;
 
-    @OneToMany(mappedBy = "productId", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<ProductInvoice> productInvoices;
+	@OneToMany(mappedBy = "productId", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<ProductInvoice> productInvoices;
 
-    @OneToMany(mappedBy = "productId", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<DetailsSale> detailsSales;
+	@OneToMany(mappedBy = "productId", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<DetailsSale> detailsSales;
 
 	public Long getProductId() {
 		return productId;
@@ -66,11 +67,11 @@ public class Product {
 		this.productId = productId;
 	}
 
-	public byte[] getImage() {
+	public String getImage() {
 		return image;
 	}
 
-	public void setImage(byte[] image) {
+	public void setImage(String image) {
 		this.image = image;
 	}
 
@@ -114,19 +115,19 @@ public class Product {
 		this.enabled = enabled;
 	}
 
-	public double getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 
-	public Double getSellPrice() {
+	public BigDecimal getSellPrice() {
 		return sellPrice;
 	}
 
-	public void setSellPrice(Double sellPrice) {
+	public void setSellPrice(BigDecimal sellPrice) {
 		this.sellPrice = sellPrice;
 	}
 
@@ -148,12 +149,7 @@ public class Product {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Arrays.hashCode(image);
-		result = prime * result + Objects.hash(amount, detailsSales, enabled, minimumAmount, name, price, productId,
-				productInvoices, season, sellPrice);
-		return result;
+		return Objects.hash(amount, enabled, image, minimumAmount, name, price, productId, season, sellPrice);
 	}
 
 	@Override
@@ -165,18 +161,16 @@ public class Product {
 		if (getClass() != obj.getClass())
 			return false;
 		Product other = (Product) obj;
-		return amount == other.amount && Objects.equals(detailsSales, other.detailsSales)
-				&& Objects.equals(enabled, other.enabled) && Arrays.equals(image, other.image)
+		return amount == other.amount && Objects.equals(enabled, other.enabled) && Objects.equals(image, other.image)
 				&& minimumAmount == other.minimumAmount && Objects.equals(name, other.name)
-				&& Double.doubleToLongBits(price) == Double.doubleToLongBits(other.price)
-				&& Objects.equals(productId, other.productId) && Objects.equals(productInvoices, other.productInvoices)
+				&& Objects.equals(price, other.price) && Objects.equals(productId, other.productId)
 				&& Objects.equals(season, other.season) && Objects.equals(sellPrice, other.sellPrice);
 	}
 
 	@Override
 	public String toString() {
-		return "Product [productId=" + productId + ", image=" + Arrays.toString(image) + ", name=" + name + ", amount="
-				+ amount + ", minimumAmount=" + minimumAmount + ", season=" + season + ", enabled=" + enabled
-				+ ", price=" + price + ", sellPrice=" + sellPrice + "]";
-	}    
+		return "Product [productId=" + productId + ", image=" + image + ", name=" + name + ", amount=" + amount
+				+ ", minimumAmount=" + minimumAmount + ", season=" + season + ", enabled=" + enabled + ", price="
+				+ price + ", sellPrice=" + sellPrice + "]";
+	}
 }

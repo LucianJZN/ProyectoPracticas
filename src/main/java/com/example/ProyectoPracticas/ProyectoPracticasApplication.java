@@ -1,17 +1,7 @@
 package com.example.ProyectoPracticas;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import com.example.ProyectoPracticas.base.entities.Invoice;
-import com.example.ProyectoPracticas.base.entities.User;
-import com.example.ProyectoPracticas.base.utils.HibernateUtil;
 
 @SpringBootApplication
 public class ProyectoPracticasApplication {

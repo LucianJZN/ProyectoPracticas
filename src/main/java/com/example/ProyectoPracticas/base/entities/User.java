@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
@@ -11,51 +12,50 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "users")
 public class User {
-	
-	//Columns
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long userId;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+	// Columns
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "user_id")
+	private Long userId;
 
-    @Column(name = "mail", unique = true)
-    private String mail;
+	@Column(name = "name", nullable = false)
+	private String name;
 
-    @Lob
-    @Column(name = "image")
-    private byte[] image;
+	@Column(name = "mail", unique = true)
+	private String mail;
 
-    @Column(name = "pass")
-    private String pass;
+	@Column(name = "image")
+	private String image;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "rol", nullable = false)
-    private Role rol;
+	@Column(name = "pass")
+	private String pass;
 
-    @Column(name = "enabled")
-    private Boolean enabled = true;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "rol", nullable = false)
+	private Role rol;
 
-    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<Invoice> invoices;
+	@Column(name = "enabled")
+	private Boolean enabled = true;
 
-    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<Sale> sales;
+	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Invoice> invoices;
 
-    public enum Role {
-        USUARIO, ADMINISTRADOR
-    }
+	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<Sale> sales;
 
-    // Getters and Setters
-	public Long  getUserId() {
+	public enum Role {
+		USUARIO, ADMINISTRADOR
+	}
+
+	// Getters and Setters
+	public Long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Long  userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 
@@ -75,11 +75,11 @@ public class User {
 		this.mail = mail;
 	}
 
-	public byte[] getImage() {
+	public String getImage() {
 		return image;
 	}
 
-	public void setImage(byte[] image) {
+	public void setImage(String image) {
 		this.image = image;
 	}
 
@@ -125,11 +125,7 @@ public class User {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		//result = prime * result + Arrays.hashCode(image);
-		result = prime * result + Objects.hash(enabled, invoices, mail, name, pass, rol, sales, userId);
-		return result;
+		return Objects.hash(enabled, image, invoices, mail, name, pass, rol, sales, userId);
 	}
 
 	@Override
@@ -141,18 +137,15 @@ public class User {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		return Objects.equals(enabled, other.enabled) && Arrays.equals(image, other.image)
-				&& Objects.equals(mail, other.mail)
+		return Objects.equals(enabled, other.enabled) && Objects.equals(image, other.image)
+				&& Objects.equals(invoices, other.invoices) && Objects.equals(mail, other.mail)
 				&& Objects.equals(name, other.name) && Objects.equals(pass, other.pass) && rol == other.rol
 				&& Objects.equals(sales, other.sales) && Objects.equals(userId, other.userId);
 	}
 
-	//toString
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", name=" + name + ", mail=" + mail + ", image=" + Arrays.toString(image)
-				+ ", pass=" + pass + ", rol=" + rol + ", enabled=" + enabled + "]";
-	}    
+		return "User [userId=" + userId + ", name=" + name + ", mail=" + mail + ", image=" + image + ", pass=" + pass
+				+ ", rol=" + rol + ", enabled=" + enabled + "]";
+	}
 }
-
-

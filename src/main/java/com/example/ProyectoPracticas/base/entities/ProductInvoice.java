@@ -1,6 +1,10 @@
 package com.example.ProyectoPracticas.base.entities;
 
+import java.math.BigDecimal;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,10 +25,12 @@ public class ProductInvoice {
     private Long detailId;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "invoice_id", nullable = false)
     private Invoice invoiceId;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "product_id", nullable = false)
     private Product productId;
 
@@ -32,10 +38,8 @@ public class ProductInvoice {
     private int quantity;
     
     @Column(name = "unit_price", nullable = false)
-    private int unitPrice;
+    private BigDecimal unitPrice;
 
-    
-    
 	public Long getDetailId() {
 		return detailId;
 	}
@@ -68,11 +72,11 @@ public class ProductInvoice {
 		this.quantity = quantity;
 	}
 
-	public int getUnitPrice() {
+	public BigDecimal getUnitPrice() {
 		return unitPrice;
 	}
 
-	public void setUnitPrice(int unitPrice) {
+	public void setUnitPrice(BigDecimal unitPrice) {
 		this.unitPrice = unitPrice;
 	}
 
@@ -92,7 +96,7 @@ public class ProductInvoice {
 		ProductInvoice other = (ProductInvoice) obj;
 		return Objects.equals(detailId, other.detailId) && Objects.equals(invoiceId, other.invoiceId)
 				&& Objects.equals(productId, other.productId) && quantity == other.quantity
-				&& unitPrice == other.unitPrice;
+				&& Objects.equals(unitPrice, other.unitPrice);
 	}
 
 	@Override

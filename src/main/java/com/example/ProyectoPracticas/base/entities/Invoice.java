@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -41,11 +42,11 @@ public class Invoice {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonBackReference
+	@JsonIgnore
     private User userId;
     
     @OneToMany(mappedBy = "invoiceId", cascade = CascadeType.ALL)
-    @JsonBackReference
+	@JsonIgnore
     private List<ProductInvoice> productInvoices;
 
     public Long getInvoiceId() {

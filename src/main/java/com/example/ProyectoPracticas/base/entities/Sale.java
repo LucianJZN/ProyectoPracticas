@@ -28,10 +28,12 @@ public class Sale {
     private Long saleId;
 
     @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "product_id", nullable = false)
     private Product productId;
 
     @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "user_id", nullable = false)
     private User userId;
 

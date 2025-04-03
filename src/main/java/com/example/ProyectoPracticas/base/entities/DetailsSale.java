@@ -1,6 +1,9 @@
 package com.example.ProyectoPracticas.base.entities;
 
+import java.math.BigDecimal;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,10 +24,12 @@ public class DetailsSale {
     private Long detailId;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "sale_id", nullable = false)
     private Sale saleId;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "product_id", nullable = false)
     private Product productId;
 
@@ -32,7 +37,7 @@ public class DetailsSale {
     private int quantity;
 
     @Column(name = "unit_price", nullable = false)
-    private double unitPrice;
+    private BigDecimal unitPrice;
 
 	public Long getDetailId() {
 		return detailId;
@@ -66,11 +71,11 @@ public class DetailsSale {
 		this.quantity = quantity;
 	}
 
-	public double getUnitPrice() {
+	public BigDecimal getUnitPrice() {
 		return unitPrice;
 	}
 
-	public void setUnitPrice(double unitPrice) {
+	public void setUnitPrice(BigDecimal unitPrice) {
 		this.unitPrice = unitPrice;
 	}
 
@@ -90,7 +95,7 @@ public class DetailsSale {
 		DetailsSale other = (DetailsSale) obj;
 		return Objects.equals(detailId, other.detailId) && Objects.equals(productId, other.productId)
 				&& quantity == other.quantity && Objects.equals(saleId, other.saleId)
-				&& Double.doubleToLongBits(unitPrice) == Double.doubleToLongBits(other.unitPrice);
+				&& Objects.equals(unitPrice, other.unitPrice);
 	}
 
 	@Override
